@@ -1,43 +1,44 @@
 <script setup></script>
 
 <template>
-  <aside class="main-nav">
-    <nav>
+  <aside>
+    <nav class="main-nav">
       <ul class="main-nav__pages">
         <li class="active">
-          <a href="/">
+          <router-link to="/">
             <span uk-icon="icon: home"></span>
             Home
-          </a>
+          </router-link>
         </li>
 
         <li>
-          <a href="/tasks">
+          <router-link to="/tasks">
             <span uk-icon="icon: list"></span>
             Tasks
-          </a>
+          </router-link>
         </li>
         <li>
-          <a href="/roadmap">
+          <router-link to="/roadmap">
             <span uk-icon="icon: bolt"></span>
             Roadmap
-          </a>
+          </router-link>
         </li>
       </ul>
-    </nav>
 
-    <ul class="main-nav__footer">
-      <li><a href="#" uk-icon="icon: cog"></a></li>
-      <li><a href="#" uk-icon="icon: sign-in"></a></li>
-      <li><a href="#" uk-icon="icon: sign-out"></a></li>
-    </ul>
+      <ul class="main-nav__footer">
+        <li><a href="#" uk-icon="icon: cog"></a></li>
+        <li><a href="#" uk-icon="icon: sign-in"></a></li>
+        <li><a href="#" uk-icon="icon: sign-out"></a></li>
+      </ul>
+    </nav>
   </aside>
 </template>
 
 <style scoped>
 .main-nav {
-  width: 300px;
+  width: 250px;
   display: flex;
+
   flex-direction: column;
   justify-content: space-between;
   height: 100vh;

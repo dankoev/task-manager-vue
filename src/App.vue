@@ -4,7 +4,9 @@ import MainNav from './components/MainNav.vue'
 
 <template>
   <MainNav />
-  <main></main>
+  <main>
+    <router-view></router-view>
+  </main>
 </template>
 
 <style scoped></style>
@@ -13,10 +15,23 @@ import MainNav from './components/MainNav.vue'
   --text-color: rgba(54, 53, 53, 0.918);
 }
 
+#app {
+  display: flex;
+}
+main {
+  flex-grow: 1;
+  padding: 20px 30px;
+  overflow: auto;
+  height: 100vh;
+  width: auto;
+  & h1 {
+    margin-bottom: 10px;
+  }
+}
+
 * {
   font-family: 'Roboto', sans-serif;
-  font-weight: 300;
-  font-size: large;
+  font-weight: 400;
   color: var(--text-color);
   padding: 0;
   margin: 0;
