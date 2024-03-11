@@ -4,6 +4,7 @@ import Tasks from './pages/TasksPage.vue'
 import App from './App.vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
 import NotFound from './pages/NotFoundPage.vue'
+import store from './store'
 
 const routes = [
   { path: '/', component: Home },
@@ -19,4 +20,5 @@ const router = createRouter({
 const app = createApp(App)
 
 app.use(router)
+app.use(store)
 app.mount('#app')
