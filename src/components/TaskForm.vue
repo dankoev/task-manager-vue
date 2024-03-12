@@ -1,6 +1,9 @@
 <script setup>
 import { ref } from 'vue'
 import { useStore } from 'vuex'
+import ValidatedInput from '@/shared/ValidatedInput.vue'
+import AlertContainer from '@/shared/AlertContainer.vue'
+import GeneralButton from '@/shared/GeneralButton.vue'
 
 const store = useStore()
 const task = ref({
@@ -8,12 +11,12 @@ const task = ref({
   date: '',
   responsible: ''
 })
-const isValidError = ref(false)
+const hasValidError = ref(false)
 
 const createTask = () => {
   const { text, date, responsible } = task.value
   if (text && date && responsible) {
-    isValidError.value = false
+    hasValidError.value = false
     store.commit({
       type: 'tasks/addTask',
       text,
@@ -22,28 +25,42 @@ const createTask = () => {
     })
     return
   }
-  isValidError.value = true
+  hasValidError.value = true
 }
 </script>
 
 <template>
   <form class="task-creator" @submit.prevent="createTask">
     <h3>Create task</h3>
-    <span class="task-creator__error" v-if="isValidError"> Validation Error</span>
+    <AlertContainer
+      class="task-creator__error"
+      v-if="hasValidError"
+      text="Validation error"
+      type="error"
+    />
 
-    <label>
-      <input type="date" name="task-date" v-model.lazy="task.date" />
-    </label>
+    <ValidatedInput
+      type="date"
+      title="Date"
+      :noValidMessage="`Must be more then '${new Date().toLocaleDateString()}''`"
+      :validationFn="(val) => new Date(val) > Date.now()"
+      @submit="(val) => (task.date = val)"
+    />
+    <ValidatedInput
+      title="Text"
+      noValidMessage="Must be more than 10 characters."
+      :validationFn="(val) => val.length >= 10"
+      @submit="(val) => (task.text = val)"
+    />
 
-    <label>
-      <input type="text" placeholder="Название задачи" v-model.lazy.trim="task.text" />
-    </label>
-
-    <label>
-      <input type="text" placeholder="@nickname" v-model.lazy.trim="task.responsible" />
-    </label>
-
-    <button class="common-button">Создать</button>
+    <ValidatedInput
+      title="Responsible"
+      placeholder="@nickname"
+      noValidMessage="Must be more than 5 characters and start with '@'"
+      :validationFn="(val) => /^@\w{5,}/.test(val)"
+      @submit="(val) => (task.responsible = val)"
+    />
+    <GeneralButton type="submit">Create</GeneralButton>
   </form>
 </template>
 
@@ -53,6 +70,7 @@ const createTask = () => {
   display: flex;
   gap: 10px;
   flex-flow: column;
+  position: relative;
   & h3 {
     margin: 0;
   }
@@ -62,6 +80,8 @@ const createTask = () => {
   }
 }
 .task-creator__error {
-  color: red;
+  position: absolute;
+  top: 5px;
+  left: 180px;
 }
 </style>

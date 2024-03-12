@@ -1,5 +1,5 @@
 <script setup>
-import MainNav from './components/MainNav.vue'
+import MainNav from '@/components/MainNav.vue'
 </script>
 
 <template>
@@ -13,6 +13,9 @@ import MainNav from './components/MainNav.vue'
 <style>
 :root {
   --text-color: rgba(54, 53, 53, 0.918);
+  --shadow-color: rgba(95, 95, 95, 0.466);
+  --error-color: rgba(156, 37, 37, 0.644);
+  --warning-color: rgb(212, 163, 55);
 }
 
 #app {
