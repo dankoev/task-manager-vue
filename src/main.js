@@ -9,7 +9,7 @@ import store from './store'
 const routes = [
   { path: '/', component: Home },
   { path: '/tasks', component: Tasks },
-  { path: '/roadmap', component: NotFound }
+  { path: '/:pathMatch(.*)*', component: NotFound }
 ]
 
 const router = createRouter({
