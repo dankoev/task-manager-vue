@@ -1,5 +1,8 @@
 <script setup>
 import MainNav from '@/components/MainNav.vue'
+import { useStore } from 'vuex'
+const store = useStore()
+store.dispatch('tasks/syncTasksFromStorage')
 </script>
 
 <template>

@@ -20,31 +20,44 @@ const toggleEdit = () => {
 }
 const deleteTask = () => {
   const { id } = props.task
-  store.commit({
-    type: 'tasks/deleteTask',
+  store.dispatch({
+    type: 'tasks/deleteTaskSyncWithStorage',
     id
   })
 }
 const updateTask = (newTask) => {
-  const { id, complited } = props.task
+  const { id, completed } = props.task
   const { text, date, responsible } = newTask
-  store.commit({
-    type: 'tasks/updateTask',
+  store.dispatch({
+    type: 'tasks/updateTaskSyncWithStorage',
     id,
     text,
     date,
     responsible,
-    complited
+    completed
   })
 
   toggleEdit()
+}
+const changeComplete = (val) => {
+  store.dispatch({
+    type: 'tasks/updateTaskSyncWithStorage',
+    ...props.task,
+    completed: val
+  })
 }
 const dateObj = computed(() => new Date(props.task.date))
 </script>
 
 <template>
   <div class="editable-task">
-    <CommonTask :text="task.text" :date="dateObj" :responsible="task.responsible" />
+    <CommonTask
+      :text="task.text"
+      :date="dateObj"
+      :responsible="task.responsible"
+      :completed="task.completed"
+      @change-complete="changeComplete"
+    />
     <ModalWindow v-if="editable" @close="toggleEdit">
       <TaskForm
         title="Edit task"

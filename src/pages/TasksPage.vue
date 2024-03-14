@@ -7,8 +7,8 @@ const store = useStore()
 const createTask = (task) => {
   const { text, date, responsible } = task
   if (text && date && responsible) {
-    store.commit({
-      type: 'tasks/addTask',
+    store.dispatch({
+      type: 'tasks/saveTask',
       text,
       date,
       responsible

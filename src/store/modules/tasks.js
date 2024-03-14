@@ -1,22 +1,7 @@
 const tasks = {
   namespaced: true,
   state: () => ({
-    tasks: {
-      1: {
-        id: 1,
-        text: ' Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ducimus neque nam repellendus nobis praesentium in eius ',
-        date: '2024-03-14',
-        responsible: '@bob',
-        complited: false
-      },
-      2: {
-        id: 2,
-        text: ' Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ducimus neque nam repellendus nobis praesentium in eius ',
-        date: '2024-03-14',
-        responsible: '@tom',
-        complited: true
-      }
-    }
+    tasks: {}
   }),
   getters: {
     getTasks(state) {
@@ -28,19 +13,36 @@ const tasks = {
       const id = Date.now()
       state.tasks[id] = {
         id,
-        complited: false,
+        completed: false,
         text,
         date,
         responsible
       }
     },
-    updateTask(state, { id, text, date, responsible, complited }) {
-      state.tasks[id] = { id, text, date, responsible, complited }
+    updateTask(state, { id, text, date, responsible, completed }) {
+      state.tasks[id] = { id, text, date, responsible, completed }
     },
     deleteTask(state, { id }) {
       delete state.tasks[id]
     }
   },
-  actions: {}
+  actions: {
+    saveTask({ state, commit }, payload) {
+      commit('addTask', payload)
+      localStorage.setItem('tasks', JSON.stringify(state.tasks))
+    },
+    updateTaskSyncWithStorage({ state, commit }, payload) {
+      commit('updateTask', payload)
+      localStorage.setItem('tasks', JSON.stringify(state.tasks))
+    },
+    deleteTaskSyncWithStorage({ state, commit }, payload) {
+      commit('deleteTask', payload)
+      localStorage.setItem('tasks', JSON.stringify(state.tasks))
+    },
+    syncTasksFromStorage({ state }) {
+      const storageTasks = JSON.parse(localStorage.getItem('tasks'))
+      state.tasks = storageTasks ?? []
+    }
+  }
 }
 export default tasks
