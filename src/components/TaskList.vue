@@ -1,20 +1,14 @@
 <script setup>
 import { useStore } from 'vuex'
-import CommonTask from './CommonTask.vue'
-
+import EditableTask from './EditableTask.vue'
+import { computed } from 'vue'
 const store = useStore()
-const tasks = store.getters['tasks/getTasks']
+const tasks = computed(() => store.getters['tasks/getTasks'])
 </script>
 
 <template>
   <div class="task-list">
-    <CommonTask
-      v-for="task in tasks"
-      :text="task.text"
-      :date="new Date(task.date)"
-      :responsible="task.responsible"
-      :key="task.id"
-    />
+    <EditableTask v-for="task in tasks" :task :key="task.id" />
   </div>
 </template>
 
