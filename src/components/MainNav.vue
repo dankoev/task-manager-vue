@@ -4,21 +4,21 @@
   <aside>
     <nav class="main-nav">
       <ul class="main-nav__pages">
-        <li class="active">
-          <router-link to="/">
+        <li>
+          <router-link class="main-nav__link" active-class="active" to="/">
             <span uk-icon="icon: home"></span>
             Home
           </router-link>
         </li>
 
         <li>
-          <router-link to="/tasks">
+          <router-link class="main-nav__link" active-class="active" to="/tasks">
             <span uk-icon="icon: list"></span>
             Tasks
           </router-link>
         </li>
         <li>
-          <router-link to="/roadmap">
+          <router-link class="main-nav__link" active-class="active" to="/roadmap">
             <span uk-icon="icon: bolt"></span>
             Roadmap
           </router-link>
@@ -57,12 +57,14 @@
 
   & li {
     transition: transform 0.2s;
-    padding: 5px;
-    border-radius: 5px;
   }
   & .active {
     background-color: rgba(110, 117, 180, 0.178);
   }
+}
+.main-nav__link {
+  padding: 12px 13px 8px 13px;
+  border-radius: 5px;
 }
 .main-nav__pages {
   display: flex;
