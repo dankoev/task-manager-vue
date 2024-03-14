@@ -1,28 +1,37 @@
 <script setup>
 import { ref } from 'vue'
-import { useStore } from 'vuex'
 import ValidatedInput from '@/shared/ValidatedInput.vue'
 import AlertContainer from '@/shared/AlertContainer.vue'
 import GeneralButton from '@/shared/GeneralButton.vue'
 
-const store = useStore()
-const task = ref({
-  text: '',
-  date: '',
-  responsible: ''
-})
 const hasValidError = ref(false)
 
-const createTask = () => {
-  const { text, date, responsible } = task.value
+const props = defineProps({
+  text: String,
+  date: String,
+  responsible: String,
+  buttonName: String,
+  title: String
+})
+
+const localTask = ref({
+  text: props.text,
+  date: props.date,
+  responsible: props.responsible
+})
+
+const emit = defineEmits(['send-task'])
+
+const submitForm = () => {
+  const { text, date, responsible } = localTask.value
   if (text && date && responsible) {
     hasValidError.value = false
-    store.commit({
-      type: 'tasks/addTask',
+    emit('send-task', {
       text,
       date,
       responsible
     })
+    localTask.value = {}
     return
   }
   hasValidError.value = true
@@ -30,8 +39,8 @@ const createTask = () => {
 </script>
 
 <template>
-  <form class="task-creator" @submit.prevent="createTask">
-    <h3>Create task</h3>
+  <form class="task-creator" @submit.prevent="submitForm">
+    <h3>{{ title }}</h3>
     <AlertContainer
       class="task-creator__error"
       v-if="hasValidError"
@@ -42,25 +51,28 @@ const createTask = () => {
     <ValidatedInput
       type="date"
       title="Date"
+      :value="localTask.date"
       :noValidMessage="`Must be more then '${new Date().toLocaleDateString()}''`"
       :validationFn="(val) => new Date(val) > Date.now()"
-      @submit="(val) => (task.date = val)"
+      @submit="(val) => (localTask.date = val)"
     />
     <ValidatedInput
       title="Text"
+      :value="localTask.text"
       noValidMessage="Must be more than 10 characters."
       :validationFn="(val) => val.length >= 10"
-      @submit="(val) => (task.text = val)"
+      @submit="(val) => (localTask.text = val)"
     />
 
     <ValidatedInput
       title="Responsible"
       placeholder="@nickname"
+      :value="localTask.responsible"
       noValidMessage="Must be more than 5 characters and start with '@'"
-      :validationFn="(val) => /^@\w{5,}/.test(val)"
-      @submit="(val) => (task.responsible = val)"
+      :validationFn="(val) => /^@\w{3,}/.test(val)"
+      @submit="(val) => (localTask.responsible = val)"
     />
-    <GeneralButton type="submit">Create</GeneralButton>
+    <GeneralButton type="submit">{{ buttonName }}</GeneralButton>
   </form>
 </template>
 
