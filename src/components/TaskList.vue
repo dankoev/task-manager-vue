@@ -8,11 +8,16 @@ const tasks = computed(() => store.getters['tasks/getTasks'])
 
 <template>
   <div class="task-list">
-    <EditableTask v-for="task in tasks" :task :key="task.id" />
+    <p v-if="tasks.length == 0" class="task-list__no-message">No scheduled tasks</p>
+    <EditableTask v-else v-for="task in tasks" :task :key="task.id" />
   </div>
 </template>
 
 <style>
+.task-list__no-message {
+  margin-left: auto;
+  margin-right: auto;
+}
 .task-list {
   margin-top: 20px;
   display: flex;

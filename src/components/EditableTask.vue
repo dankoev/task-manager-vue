@@ -18,6 +18,13 @@ const editable = ref(false)
 const toggleEdit = () => {
   editable.value = !editable.value
 }
+const deleteTask = () => {
+  const { id } = props.task
+  store.commit({
+    type: 'tasks/deleteTask',
+    id
+  })
+}
 const updateTask = (newTask) => {
   const { id, complited } = props.task
   const { text, date, responsible } = newTask
@@ -50,7 +57,7 @@ const dateObj = computed(() => new Date(props.task.date))
     </ModalWindow>
     <div class="editable-task__control">
       <GeneralButton @click="toggleEdit">Edit</GeneralButton>
-      <GeneralButton class="delete-btn">Delete</GeneralButton>
+      <GeneralButton @click="deleteTask" class="delete-btn">Delete</GeneralButton>
     </div>
   </div>
 </template>

@@ -36,6 +36,9 @@ const tasks = {
     },
     updateTask(state, { id, text, date, responsible, complited }) {
       state.tasks[id] = { id, text, date, responsible, complited }
+    },
+    deleteTask(state, { id }) {
+      delete state.tasks[id]
     }
   },
   actions: {}
